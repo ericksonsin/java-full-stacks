@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -30,6 +32,9 @@ public class PessoaController {
 
 	@Autowired
 	private TelefoneRepository telefoneRepository;
+
+	@Autowired
+	private ReportUtil reportUtil;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/cadastropessoa")
 	public ModelAndView inicio() {
@@ -105,19 +110,26 @@ public class PessoaController {
 	public ModelAndView pesquisar(@RequestParam("nomepesquisa") String nomepesquisa,
 			@RequestParam("pesqsexo") String pesqsexo) { // pesquisa nome por sexo só ir add os filtros
 
-			List<Pessoa> pessoas = new ArrayList<Pessoa>();
+		List<Pessoa> pessoas = new ArrayList<Pessoa>();
 
-			if (pesqsexo != null && !pesqsexo.isEmpty()){
-				pessoas = pessoaRepository.findPessoaByNameSexo(nomepesquisa, pesqsexo);
-			}else{
-				pessoas = pessoaRepository.findPessoaByName(nomepesquisa);
-			}
-
+		if (pesqsexo != null && !pesqsexo.isEmpty()) {
+			pessoas = pessoaRepository.findPessoaByNameSexo(nomepesquisa, pesqsexo);
+		} else {
+			pessoas = pessoaRepository.findPessoaByName(nomepesquisa);
+		}
 
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
 		modelAndView.addObject("pessoas", pessoas);
 		modelAndView.addObject("pessoaobj", new Pessoa());
 		return modelAndView;
+	}
+
+	@GetMapping("**/pesquisarpessoa")
+	public void imprimePdf(@RequestParam("nomepesquisa") String nomepesquisa,
+			@RequestParam("pesqsexo") String pesqsexo,
+				HttpServletRequest request,
+				HttpServletRequest response) {
+
 	}
 
 	@GetMapping("/telefones/{idpessoa}")
