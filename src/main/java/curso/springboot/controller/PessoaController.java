@@ -43,6 +43,9 @@ public class PessoaController {
 	@RequestMapping(method = RequestMethod.POST, value = "**/salvarpessoa")
 	public ModelAndView salvar(@Validated Pessoa pessoa, BindingResult bindingResult) {
 
+		//problema que estava ocorrendo ao editar erro de cascade
+		pessoa.setTelefones(telefoneRepository.getTelefones(pessoa.getId()));
+
 		if (bindingResult.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
 			Iterable<Pessoa> pessoasIt = pessoaRepository.findAll();
