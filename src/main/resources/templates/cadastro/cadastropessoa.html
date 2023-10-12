@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
   <meta charset="UTF-8">
@@ -10,8 +10,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
   <!-- Adicionando JQuery -->
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"
-  integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
-  crossorigin="anonymous"></script>
+    integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 
   <!-- Compiled and minified CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -29,108 +28,142 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <body>
   <h3> a decidir</h3>
-  <h5>Cadastro de Pessoas</h5>
+  <fieldset>
+    <legend>Cadastro de Pessoa</legend>
+    <div class="row">
 
-  <div class="row">
+      <br />
+      <div th:each="m : ${msg}">
+        <span th:text=" ${m}"></span>
+      </div>
+      <br />
 
-    <br/>
-    <div th:each = "m : ${msg}">
-      <span th:text=" ${m}"></span>
+      <form action="salvarpessoa" id="formpessoa" method="post" th:object="${pessoaobj}" class="col s12">
+
+        <div class="row">
+          <div class="input-fiel col s6">
+            <label for="id" class="active">ID</label>
+            <input name="id" th:field="*{id}" id="id" readonly="readonly">
+          </div>
+          <div class="input-fiel col s6">
+            <label for="nome" class="active">Nome</label>
+            <input placeholder="Informe o nome da pessoa" name="nome" th:field="*{nome}" id="nome" class="validate">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-field col s6">
+            <label for="sobrenome" class="active">Sobrenome</label>
+            <input placeholder="informe o sobrenome" name="sobrenome" th:field="*{sobrenome}" id="sobrenome"
+              class="validate">
+          </div>
+
+          <div class="row">
+            <div class="input-field col s6">
+              <label for="Sexopessoa" class="active">Sexo</label>
+              <select class="browser-default" th:field="*{sexopessoa}">
+                <option value="" disabled selected>--[Selecione]--</option>
+                <option value="MASCULINO" th:text="Masculino"></option>
+                <option value="FEMININO" th:text="Feminino"></option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+              <label for="cep" class="active">Cep</label>
+              <input placeholder="informe um cep válido" name="cep" th:field="*{cep}" id="cep" class="validate">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+              <label for="rua" class="active">rua</label>
+              <input name="rua" th:field="*{rua}" id="rua" class="validate">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+              <label for="bairro" class="active">bairro</label>
+              <input name="bairro" th:field="*{bairro}" id="bairro" class="validate">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+              <label for="cidade" class="active">cidade</label>
+              <input name="cidade" th:field="*{cidade}" id="cidade" class="validate">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+              <label for="uf" class="active">Uf</label>
+              <input name="uf" th:field="*{uf}" id="uf" class="validate">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+              <label for="ibge" class="active">ibge</label>
+              <input name="ibge" th:field="*{ibge}" id="ibge" class="validate">
+            </div>
+          </div>
+
+          <div class="row" sec:authorize="hasRole('ROLE_ADMIN')">
+            <div class="input-field col s12">
+              <label for="idade" class="active">Idade</label>
+              <input name="idade" th:field="*{idade}" id="idade" class="validate">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s6">
+              <input class="waves-effect waves-light btn" type="submit" value="Salvar">
+              <button class="waves-effect waves-light btn"
+                onclick="document.getElementById('formpessoa').reset();">NOVO</button>
+            </div>
+          </div>
+
+      </form>
     </div>
-    <br/>
+  </fieldset>
 
-    <form action="salvarpessoa" id="formpessoa" method="post" th:object="${pessoaobj}" class="col s12">
+  <br />
+  <br />
 
-      <div class="row">
-        <div class="input-fiel col s6">
-          <label for="id" class="active">ID</label>
-          <input name="id" th:field="*{id}" id="id" readonly="readonly">
-        </div>
-        <div class="input-fiel col s6">
-          <label for="nome" class="active">Nome</label>
-          <input name="nome" th:field="*{nome}" id="nome" class="validate">
-        </div>
-      </div>
+  <fieldset>
+    <legend>Campos de Pesquisa</legend>
+    <div class="row">
+      <form action="pesquisarpessoa" method="post">
+        <div class="row">
+          <div class="input-field col s6">
+            <label for="nomepesquisa" class="active">Pesquisa por nome:</label>
+            <input name="nomepesquisa" id="nomepesquisa" class="validate">
 
-      <div class="row">
-        <div class="input-field col s12">
-          <label for="sobrenome" class="active">Sobrenome</label>
-          <input name="sobrenome" th:field="*{sobrenome}" id="sobrenome" class="validate">
-        </div>
-      </div>
+          </div>
 
-      <div class="row">
-        <div class="input-field col s12">
-          <label for="cep" class="active">Cep</label>
-          <input name="cep" th:field="*{cep}" id="cep" class="validate">
-        </div>
-      </div>
+          <div class="input-field col s6">
+            <label for="pesqsexo" class="active">Pesquisa Sexo</label>
+            <select class="browser-default" name="pesqsexo" id="pesqsexo">
+              <option value="" disabled selected>--[Selecione]--</option>
+              <option value="MASCULINO" th:text="Masculino"></option>
+              <option value="FEMININO" th:text="Feminino"></option>
+            </select>
 
-      <div class="row">
-        <div class="input-field col s12">
-          <label for="rua" class="active">rua</label>
-          <input name="rua" th:field="*{rua}" id="rua" class="validate">
-        </div>
-      </div>
+          </div>
 
-      <div class="row">
-        <div class="input-field col s12">
-          <label for="bairro" class="active">bairro</label>
-          <input name="bairro" th:field="*{bairro}" id="bairro" class="validate">
-        </div>
-      </div>
+          <div class="input-field col s12">
 
-      <div class="row">
-        <div class="input-field col s12">
-          <label for="cidade" class="active">cidade</label>
-          <input name="cidade" th:field="*{cidade}" id="cidade" class="validate">
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="input-field col s12">
-          <label for="uf" class="active">Uf</label>
-          <input name="uf" th:field="*{uf}" id="uf" class="validate">
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="input-field col s12">
-          <label for="ibge" class="active">ibge</label>
-          <input name="ibge" th:field="*{ibge}" id="ibge" class="validate">
-        </div>
-      </div>
-
-      <div class="row" sec:authorize="hasRole('ROLE_ADMIN')">
-        <div class="input-field col s12">
-          <label for="idade" class="active">Idade</label>
-          <input name="idade" th:field="*{idade}" id="idade" class="validate">
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="input-field col s6">
-          <input class="waves-effect waves-light btn" type="submit" value="Salvar">
-          <button class="waves-effect waves-light btn"
-            onclick="document.getElementById('formpessoa').reset();">NOVO</button>
-        </div>
-      </div>
-
-    </form>
-  </div>
-
-  <div class="row">
-    <form action="pesquisarpessoa" method="post">
-      <div class="row">
-        <div class="input-field col s12">
-          <label for="nomepesquisa" class="active">Pesquisa por nome:</label>
-          <input name="nomepesquisa" id="nomepesquisa" class="validate">
+          </div>
           <input class="waves-effect waves-light btn" type="submit" value="Buscar">
           <a class="waves-effect waves-light btn" href="/listapessoas">LISTA PESSOAS</a>
         </div>
-      </div>
+    </div>
     </form>
-  </div>
+    </div>
+  </fieldset>
 
 </body>
 <table class="striped">
@@ -154,73 +187,71 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
   </tr>
 </table>
 
- <!-- Adicionando Javascript -->
- <script>
+<!-- Adicionando Javascript -->
+<script>
+  $(document).ready(function () {
 
-  $(document).ready(function() {
+    function limpa_formulário_cep() {
+      // Limpa valores do formulário de cep.
+      $("#rua").val("");
+      $("#bairro").val("");
+      $("#cidade").val("");
+      $("#uf").val("");
+      $("#ibge").val("");
+    }
 
-      function limpa_formulário_cep() {
-          // Limpa valores do formulário de cep.
-          $("#rua").val("");
-          $("#bairro").val("");
-          $("#cidade").val("");
-          $("#uf").val("");
-          $("#ibge").val("");
-      }
-      
-      //Quando o campo cep perde o foco.
-      $("#cep").blur(function() {
+    //Quando o campo cep perde o foco.
+    $("#cep").blur(function () {
 
-          //Nova variável "cep" somente com dígitos.
-          var cep = $(this).val().replace(/\D/g, '');
+      //Nova variável "cep" somente com dígitos.
+      var cep = $(this).val().replace(/\D/g, '');
 
-          //Verifica se campo cep possui valor informado.
-          if (cep != "") {
+      //Verifica se campo cep possui valor informado.
+      if (cep != "") {
 
-              //Expressão regular para validar o CEP.
-              var validacep = /^[0-9]{8}$/;
+        //Expressão regular para validar o CEP.
+        var validacep = /^[0-9]{8}$/;
 
-              //Valida o formato do CEP.
-              if(validacep.test(cep)) {
+        //Valida o formato do CEP.
+        if (validacep.test(cep)) {
 
-                  //Preenche os campos com "..." enquanto consulta webservice.
-                  $("#rua").val("...");
-                  $("#bairro").val("...");
-                  $("#cidade").val("...");
-                  $("#uf").val("...");
-                  $("#ibge").val("...");
+          //Preenche os campos com "..." enquanto consulta webservice.
+          $("#rua").val("...");
+          $("#bairro").val("...");
+          $("#cidade").val("...");
+          $("#uf").val("...");
+          $("#ibge").val("...");
 
-                  //Consulta o webservice viacep.com.br/
-                  $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+          //Consulta o webservice viacep.com.br/
+          $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
 
-                      if (!("erro" in dados)) {
-                          //Atualiza os campos com os valores da consulta.
-                          $("#rua").val(dados.logradouro);
-                          $("#bairro").val(dados.bairro);
-                          $("#cidade").val(dados.localidade);
-                          $("#uf").val(dados.uf);
-                          $("#ibge").val(dados.ibge);
-                      } //end if.
-                      else {
-                          //CEP pesquisado não foi encontrado.
-                          limpa_formulário_cep();
-                          alert("CEP não encontrado.");
-                      }
-                  });
-              } //end if.
-              else {
-                  //cep é inválido.
-                  limpa_formulário_cep();
-                  alert("Formato de CEP inválido.");
-              }
-          } //end if.
-          else {
-              //cep sem valor, limpa formulário.
+            if (!("erro" in dados)) {
+              //Atualiza os campos com os valores da consulta.
+              $("#rua").val(dados.logradouro);
+              $("#bairro").val(dados.bairro);
+              $("#cidade").val(dados.localidade);
+              $("#uf").val(dados.uf);
+              $("#ibge").val(dados.ibge);
+            } //end if.
+            else {
+              //CEP pesquisado não foi encontrado.
               limpa_formulário_cep();
-          }
-      });
+              alert("CEP não encontrado.");
+            }
+          });
+        } //end if.
+        else {
+          //cep é inválido.
+          limpa_formulário_cep();
+          alert("Formato de CEP inválido.");
+        }
+      } //end if.
+      else {
+        //cep sem valor, limpa formulário.
+        limpa_formulário_cep();
+      }
+    });
   });
-
 </script>
 
 <!-- Compiled and minified JavaScript -->

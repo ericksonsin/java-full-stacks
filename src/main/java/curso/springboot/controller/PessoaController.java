@@ -43,7 +43,7 @@ public class PessoaController {
 	@RequestMapping(method = RequestMethod.POST, value = "**/salvarpessoa")
 	public ModelAndView salvar(@Validated Pessoa pessoa, BindingResult bindingResult) {
 
-		//problema que estava ocorrendo ao editar erro de cascade
+		// problema que estava ocorrendo ao editar erro de cascade
 		pessoa.setTelefones(telefoneRepository.getTelefones(pessoa.getId()));
 
 		if (bindingResult.hasErrors()) {
@@ -53,7 +53,7 @@ public class PessoaController {
 			modelAndView.addObject("pessoaobj", pessoa);
 
 			List<String> msg = new ArrayList<String>();
-			for (ObjectError objectError : bindingResult.getAllErrors()){
+			for (ObjectError objectError : bindingResult.getAllErrors()) {
 				msg.add(objectError.getDefaultMessage()); // getDefaultMessage vem das anotações @NoteEmpty e outras
 			}
 
@@ -102,7 +102,9 @@ public class PessoaController {
 	}
 
 	@PostMapping("**/pesquisarpessoa")
-	public ModelAndView pesquisar(@RequestParam("nomepesquisa") String nomepesquisa) {
+	public ModelAndView pesquisar(@RequestParam("nomepesquisa") String nomepesquisa,
+			@RequestParam("pesqsexo") String pesqsexo) { // pesquisa nome por sexo só ir add os filtros
+
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
 		modelAndView.addObject("pessoas", pessoaRepository.findPessoaByName(nomepesquisa));
 		modelAndView.addObject("pessoaobj", new Pessoa());
