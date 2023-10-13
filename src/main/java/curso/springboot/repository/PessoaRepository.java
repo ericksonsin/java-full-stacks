@@ -20,6 +20,9 @@ public interface PessoaRepository extends CrudRepository<Pessoa, Long> {
 
     void save(Telefone telefone);
 
+    @Query("select p from Pessoa p where p.sexopessoa = ?1 ")
+	List<Pessoa> findPessoaBySexo(String sexo);
+
     @Query("select p from Pessoa p where p.nome like %?1% and p.sexopessoa = ?2")
     List<Pessoa> findPessoaByNameSexo(String nome, String sexopessoa);
 }
